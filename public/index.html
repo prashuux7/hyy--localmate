@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOCALMATE | Discover Local Businesses</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+:root{
+  --green:#21c982;
+  --dark:#081510;
+  --card:#10251b;
+  --muted:#9aa99f;
+}
+
+body{
+  background:var(--dark);
+  color:white;
+  min-height:100vh;
+}
+
+header{
+  padding:20px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #20372b;
+}
+
+.logo{
+  font-size:25px;
+  font-weight:800;
+  color:var(--green);
+  letter-spacing:1px;
+}
+
+.logo span{
+  color:white;
+}
+
+.add-btn{
+  background:var(--green);
+  color:#06140d;
+  border:0;
+  padding:12px 18px;
+  border-radius:9px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.hero{
+  text-align:center;
+  padding:75px 20px 45px;
+}
+
+.hero h1{
+  font-size:clamp(30px,5vw,48px);
+  margin-bottom:15px;
+}
+
+.hero h1 span{
+  color:var(--green);
+}
+
+.hero p{
+  color:var(--muted);
+  font-size:16px;
+  margin-bottom:30px;
+}
+
+.search-box{
+  max-width:650px;
+  margin:auto;
+  display:flex;
+  background:white;
+  padding:7px;
+  border-radius:12px;
+  gap:8px;
+}
+
+.search-box input{
+  flex:1;
+  min-width:0;
+  border:0;
+  outline:0;
+  padding:13px;
+  font-size:15px;
+  color:#111;
+}
+
+.search-box button{
+  background:var(--green);
+  border:0;
+  padding:0 22px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.container{
+  padding:35px 7%;
+}
+
+.section-title{
+  font-size:23px;
+  margin-bottom:22px;
+}
+
+.categories{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:38px;
+}
+
+.category{
+  background:var(--card);
+  border:1px solid #254535;
+  padding:13px 20px;
+  border-radius:10px;
+  color:white;
+  cursor:pointer;
+}
+
+.category.active,
+.category:hover{
+  background:var(--green);
+  color:#06140d;
+}
+
+.location-select{
+  background:var(--card);
+  border:1px solid #254535;
+  color:white;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:25px;
+  width:100%;
+  max-width:250px;
+}
+
+.business-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid #254535;
+  border-radius:14px;
+  overflow:hidden;
+  transition:.25s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  border-color:var(--green);
+}
+
+.card-img{
+  height:145px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:55px;
+  background:#193528;
+}
+
+.card-content{
+  padding:18px;
+}
+
+.card h3{
+  font-size:19px;
+  margin-bottom:9px;
+}
+
+.card p{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:8px;
+}
+
+.card .tag{
+  display:inline-block;
+  color:var(--green);
+  font-size:12px;
+  margin-bottom:12px;
+}
+
+.contact-btn{
+  display:block;
+  text-align:center;
+  background:#193b2a;
+  color:var(--green);
+  padding:11px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+  margin-top:12px;
+}
+
+.empty{
+  display:none;
+  text-align:center;
+  color:var(--muted);
+  padding:40px;
+}
+
+footer{
+  margin-top:65px;
+  padding:30px 7%;
+  text-align:center;
+  border-top:1px solid #20372b;
+  color:var(--muted);
+}
+
+footer span{
+  color:var(--green);
+}
+
+@media(max-width:600px){
+  header{padding:17px 5%}
+  .hero{padding:55px 15px 35px}
+  .container{padding:25px 5%}
+  .search-box button{padding:0 14px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">LOCAL<span>MATE</span></div>
+  <button class="add-btn" onclick="addBusiness()">
+    + Add Your Business
+  </button>
+</header>
+
+<section class="hero">
+  <h1>Find the Best Local<br><span>Businesses Near You!</span></h1>
+  <p>Discover • Connect • Support Local</p>
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search shops, services, businesses..."
+      oninput="filterBusinesses()"
+    >
+    <button onclick="filterBusinesses()">Search</button>
+  </div>
+</section>
+
+<main class="container">
+
+  <h2 class="section-title">Explore Categories</h2>
+
+  <div class="categories">
+    <button class="category active" onclick="chooseCategory('All',this)">All</button>
+    <button class="category" onclick="chooseCategory('Food',this)">🍔 Food</button>
+    <button class="category" onclick="chooseCategory('Shopping',this)">🛍️ Shopping</button>
+    <button class="category" onclick="chooseCategory('Beauty',this)">💇 Beauty</button>
+    <button class="category" onclick="chooseCategory('Education',this)">📚 Education</button>
+    <button class="category" onclick="chooseCategory('Services',this)">🔧 Services</button>
+  </div>
+
+  <h2 class="section-title">Discover Local Businesses</h2>
+
+  <select class="location-select" id="location" onchange="filterBusinesses()">
+    <option value="">All Locations</option>
+    <option value="Nellore">Nellore</option>
+    <option value="Vijayawada">Vijayawada</option>
+    <option value="Guntur">Guntur</option>
+    <option value="Tirupati">Tirupati</option>
+    <option value="Visakhapatnam">Visakhapatnam</option>
+  </select>
+
+  <div class="business-grid" id="businessGrid">
+
+    <div class="card" data-category="Food" data-location="Nellore" data-name="food cafe">
+      <div class="card-img">🍔</div>
+      <div class="card-content">
+        <span class="tag">FOOD & RESTAURANTS</span>
+        <h3>Local Food Cafe</h3>
+        <p>📍 Nellore</p>
+        <p>Fresh and delicious food.</p>
+        <a class="contact-btn" href="#">View Details</a>
+      </div>
+    </div>
+
+    <div class="card" data-category="Shopping" data-location="Vijayawada" data-name="fashion store">
+      <div class="card-img">🛍️</div>
+      <div class="card-content">
+        <span class="tag">SHOPPING</span>
+        <h3>Fashion Store</h3>
+        <p>📍 Vijayawada</p>
+        <p>Explore fashion and clothing.</p>
+        <a class="contact-btn" href="#">View Details</a>
+      </div>
+    </div>
+
+    <div class="card" data-category="Beauty" data-location="Guntur" data-name="beauty salon">
+      <div class="card-img">💇</div>
+      <div class="card-content">
+        <span class="tag">BEAUTY</span>
+        <h3>Beauty Salon</h3>
+        <p>📍 Guntur</p>
+        <p>Beauty and grooming services.</p>
+        <a class="contact-btn" href="#">View Details</a>
+      </div>
+    </div>
+
+    <div class="card" data-category="Education" data-location="Tirupati" data-name="learning academy">
+      <div class="card-img">📚</div>
+      <div class="card-content">
+        <span class="tag">EDUCATION</span>
+        <h3>Learning Academy</h3>
+        <p>📍 Tirupati</p>
+        <p>Learn and improve your skills.</p>
+        <a class="contact-btn" href="#">View Details</a>
+      </div>
+    </div>
+
+    <div class="card" data-category="Services" data-location="Visakhapatnam" data-name="home services">
+      <div class="card-img">🔧</div>
+      <div class="card-content">
+        <span class="tag">SERVICES</span>
+        <h3>Home Services</h3>
+        <p>📍 Visakhapatnam</p>
+        <p>Local home service providers.</p>
+        <a class="contact-btn" href="#">View Details</a>
+      </div>
+    </div>
+
+    <div class="card" data-category="Food" data-location="Nellore" data-name="sweet house">
+      <div class="card-img">🍰</div>
+      <div class="card-content">
+        <span class="tag">FOOD</span>
+        <h3>Sweet House</h3>
+        <p>📍 Nellore</p>
+        <p>Fresh sweets and bakery items.</p>
+        <a class="contact-btn" href="#">View Details</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="empty" id="empty">
+    <h3>No businesses found!</h3>
+    <p>Try another search or location.</p>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 <span>LOCALMATE</span>. Discover • Connect • Support Local.</p>
+</footer>
+
+<script>
+let selectedCategory="All";
+
+function chooseCategory(category,element){
+  selectedCategory=category;
+
+  document.querySelectorAll(".category").forEach(c=>{
+    c.classList.remove("active");
+  });
+
+  element.classList.add("active");
+  filterBusinesses();
+}
+
+function filterBusinesses(){
+  const search=document.getElementById("searchInput").value.toLowerCase();
+  const location=document.getElementById("location").value;
+  let visible=0;
+
+  document.querySelectorAll(".card").forEach(card=>{
+    const matchesCategory=selectedCategory==="All"||card.dataset.category===selectedCategory;
+    const matchesLocation=!location||card.dataset.location===location;
+    const matchesSearch=card.dataset.name.toLowerCase().includes(search)||card.innerText.toLowerCase().includes(search);
+
+    const show=matchesCategory&&matchesLocation&&matchesSearch;
+    card.style.display=show?"block":"none";
+
+    if(show)visible++;
+  });
+
+  document.getElementById("empty").style.display=visible?"none":"block";
+}
+
+function addBusiness(){
+  alert("Business registration will be available in the next stage!");
+}
+</script>
+
+</body>
+</html>
