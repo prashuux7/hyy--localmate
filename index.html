@@ -1,1 +1,216 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOCALMATE | Discover Local Businesses</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--green:#21c982;--dark:#081510;--muted:#9aa9a1}
+body{font-family:Arial,sans-serif;background:#081510;color:#f5fff9}
+header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 7%;border-bottom:1px solid #ffffff12}
+.logo{font-size:25px;font-weight:800;letter-spacing:1px}
+.logo span{color:var(--green)}
+nav{display:flex;gap:28px;align-items:center}
+nav a{color:#c7d4cc;text-decoration:none;font-size:14px}
+.btn{background:var(--green);color:#062015;padding:13px 20px;border:0;border-radius:9px;font-weight:700;text-decoration:none;cursor:pointer}
+.hero{text-align:center;padding:85px 20px 65px;background:radial-gradient(ellipse at 50% 0%,#164c35 0%,#081510 65%)}
+.tag{display:inline-block;color:var(--green);border:1px solid #21c98255;border-radius:30px;padding:8px 15px;font-size:12px;margin-bottom:25px}
+h1{font-size:clamp(38px,6vw,65px);line-height:1.12;max-width:850px;margin:auto}
+h1 span{color:var(--green)}
+.hero p{color:var(--muted);font-size:16px;margin:22px auto 30px;line-height:1.7}
+.search{max-width:720px;margin:auto;background:#fff;padding:8px;border-radius:12px;display:flex;gap:8px}
+.search input,.search select{border:0;outline:0;padding:13px;font-size:14px;min-width:0;flex:1;color:#18251e;background:white}
+.search button{padding:14px 22px}
+.section{padding:65px 7%}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:28px;gap:15px}
+.section h2{font-size:29px}
+.sub{color:var(--muted);font-size:14px;margin-top:9px}
+.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.category{background:#10221a;border:1px solid #ffffff12;border-radius:13px;padding:23px 10px;text-align:center;cursor:pointer;transition:.2s}
+.category:hover,.category.active{border-color:var(--green);background:#153426}
+.category .emoji{font-size:28px;margin-bottom:12px}
+.category p{font-size:13px;color:#dce9e1}
+.businesses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:#10221a;border:1px solid #ffffff12;border-radius:15px;overflow:hidden;transition:.2s}
+.card:hover{transform:translateY(-4px);border-color:#21c98288}
+.card-image{height:155px;display:grid;place-items:center;font-size:48px;background:linear-gradient(135deg,#183c2b,#10251b)}
+.card-body{padding:19px}
+.card-body h3{font-size:18px;margin-bottom:9px}
+.card-body p{font-size:13px;color:var(--muted);line-height:1.6}
+.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:17px}
+.location{font-size:12px;color:#c1d0c7}
+.view{color:var(--green);font-size:13px;font-weight:bold}
+.empty{display:none;color:var(--muted);padding:25px 0}
+.cta{margin:15px 7% 70px;padding:48px 25px;text-align:center;border-radius:18px;background:linear-gradient(120deg,#123c29,#10251b);border:1px solid #21c98244}
+.cta h2{font-size:30px;margin-bottom:12px}
+.cta p{color:var(--muted);margin-bottom:23px;line-height:1.6}
+footer{border-top:1px solid #ffffff15;padding:28px 7%;display:flex;justify-content:space-between;gap:15px;color:var(--muted);font-size:13px}
+footer strong{color:var(--green)}
+@media(max-width:750px){
+ header{padding:0 5%;height:68px}
+ nav a:not(.btn){display:none}
+ .hero{padding:65px 18px 48px}
+ .search{flex-wrap:wrap}
+ .search input{flex-basis:100%}
+ .search select{flex-basis:40%}
+ .search button{flex:1}
+ .section{padding:48px 5%}
+ .categories{grid-template-columns:repeat(3,1fr);gap:10px}
+ .businesses{grid-template-columns:1fr}
+ .section-head{align-items:start;flex-direction:column}
+ .cta{margin:10px 5% 45px}
+ footer{padding:24px 5%;flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">LOCAL<span>MATE.</span></div>
+  <nav>
+    <a href="#explore">Explore</a>
+    <a href="#categories">Categories</a>
+    <a href="#join" class="btn">Add Your Business +</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="tag">✦ DISCOVER • CONNECT • SUPPORT LOCAL</div>
+  <h1>Find the Best Local <span>Businesses</span> Near You.</h1>
+  <p>Discover amazing shops, services and businesses around your city.<br>Everything local, all in one place.</p>
+  <div class="search">
+    <input id="searchInput" type="text" placeholder="Search shops, services, businesses...">
+    <select id="location">
+      <option value="">All locations</option>
+      <option>Amalapuram</option>
+      <option>Rajahmundry</option>
+      <option>Kakinada</option>
+      <option>Vijayawada</option>
+      <option>Visakhapatnam</option>
+      <option>Other AP</option>
+    </select>
+    <button class="btn" onclick="filterBusinesses()">Search</button>
+  </div>
+</section>
+
+<section class="section" id="categories">
+  <div class="section-head">
+    <div>
+      <h2>Explore Categories</h2>
+      <p class="sub">Find exactly what you are looking for.</p>
+    </div>
+  </div>
+  <div class="categories">
+    <div class="category active" onclick="chooseCategory('All',this)"><div class="emoji">🌟</div><p>All</p></div>
+    <div class="category" onclick="chooseCategory('Food',this)"><div class="emoji">🍕</div><p>Food & Cafes</p></div>
+    <div class="category" onclick="chooseCategory('Shopping',this)"><div class="emoji">🛍️</div><p>Shopping</p></div>
+    <div class="category" onclick="chooseCategory('Beauty',this)"><div class="emoji">💇</div><p>Beauty</p></div>
+    <div class="category" onclick="chooseCategory('Education',this)"><div class="emoji">📚</div><p>Education</p></div>
+    <div class="category" onclick="chooseCategory('Services',this)"><div class="emoji">🔧</div><p>Services</p></div>
+  </div>
+</section>
+
+<section class="section" id="explore" style="padding-top:10px">
+  <div class="section-head">
+    <div>
+      <h2>Explore Local Businesses</h2>
+      <p class="sub">A preview of how business listings will look.</p>
+    </div>
+  </div>
+  <div class="businesses" id="businessList">
+    <article class="card" data-category="Food" data-location="Amalapuram" data-name="Local Cafe">
+      <div class="card-image">☕</div>
+      <div class="card-body">
+        <h3>Local Cafe</h3>
+        <p>Fresh coffee, snacks and a relaxing place to hang out.</p>
+        <div class="card-foot"><span class="location">📍 Amalapuram</span><span class="view">Food & Cafes</span></div>
+      </div>
+    </article>
+    <article class="card" data-category="Shopping" data-location="Kakinada" data-name="Style Store">
+      <div class="card-image">🛍️</div>
+      <div class="card-body">
+        <h3>Style Store</h3>
+        <p>Fashion, clothing and everyday shopping essentials.</p>
+        <div class="card-foot"><span class="location">📍 Kakinada</span><span class="view">Shopping</span></div>
+      </div>
+    </article>
+    <article class="card" data-category="Beauty" data-location="Rajahmundry" data-name="Glow Studio">
+      <div class="card-image">💇</div>
+      <div class="card-body">
+        <h3>Glow Studio</h3>
+        <p>Beauty and grooming services for your everyday style.</p>
+        <div class="card-foot"><span class="location">📍 Rajahmundry</span><span class="view">Beauty</span></div>
+      </div>
+    </article>
+    <article class="card" data-category="Education" data-location="Vijayawada" data-name="Smart Academy">
+      <div class="card-image">📚</div>
+      <div class="card-body">
+        <h3>Smart Academy</h3>
+        <p>Learning and educational support for students.</p>
+        <div class="card-foot"><span class="location">📍 Vijayawada</span><span class="view">Education</span></div>
+      </div>
+    </article>
+    <article class="card" data-category="Services" data-location="Visakhapatnam" data-name="Tech Services">
+      <div class="card-image">💻</div>
+      <div class="card-body">
+        <h3>Tech Services</h3>
+        <p>Local computer and technology support services.</p>
+        <div class="card-foot"><span class="location">📍 Visakhapatnam</span><span class="view">Services</span></div>
+      </div>
+    </article>
+    <article class="card" data-category="Food" data-location="Amalapuram" data-name="Fresh Bites">
+      <div class="card-image">🍔</div>
+      <div class="card-body">
+        <h3>Fresh Bites</h3>
+        <p>Delicious meals and quick bites for everyone.</p>
+        <div class="card-foot"><span class="location">📍 Amalapuram</span><span class="view">Food & Cafes</span></div>
+      </div>
+    </article>
+  </div>
+  <p class="empty" id="empty">No matching businesses found. Try another search.</p>
+</section>
+
+<section class="cta" id="join">
+  <h2>Own a Local Business?</h2>
+  <p>Help more customers discover your business.<br>Join LOCALMATE and grow your local presence.</p>
+  <button class="btn" onclick="alert('Business registration will be available in the next development stage.')">Add Your Business →</button>
+</section>
+
+<footer>
+  <div class="logo">LOCAL<span>MATE.</span></div>
+  <p>Made for local businesses across Andhra Pradesh.</p>
+  <p>© 2026 LOCALMATE</p>
+</footer>
+
+<script>
+let selectedCategory="All";
+
+function chooseCategory(category,element){
+  selectedCategory=category;
+  document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
+  element.classList.add("active");
+  filterBusinesses();
+}
+
+function filterBusinesses(){
+  const search=document.getElementById("searchInput").value.toLowerCase();
+  const location=document.getElementById("location").value;
+  let visible=0;
+
+  document.querySelectorAll(".card").forEach(card=>{
+    const matchesCategory=selectedCategory==="All"||card.dataset.category===selectedCategory;
+    const matchesLocation=!location||card.dataset.location===location;
+    const matchesSearch=card.dataset.name.toLowerCase().includes(search)||card.innerText.toLowerCase().includes(search);
+    const show=matchesCategory&&matchesLocation&&matchesSearch;
+    card.style.display=show?"block":"none";
+    if(show)visible++;
+  });
+
+  document.getElementById("empty").style.display=visible?"none":"block";
+}
+</script>
+</body>
+</html>
+
