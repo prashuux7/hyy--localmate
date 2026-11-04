@@ -8,66 +8,146 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-:root{--green:#21c982;--dark:#081510;--card:#10251b;--muted:#9aa99f}
-body{background:var(--dark);color:white;min-height:100vh}
-header{padding:20px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #20372b}
-.logo{font-size:25px;font-weight:800;color:var(--green);letter-spacing:1px}
+:root{
+--green:#21c982;
+--dark:#081510;
+--card:#10231a;
+--muted:#9aada3;
+--white:#f5fff9;
+}
+body{background:var(--dark);color:var(--white)}
+header{
+display:flex;align-items:center;justify-content:space-between;
+padding:20px 7%;border-bottom:1px solid #1c3528;
+}
+.logo{font-size:25px;font-weight:800;color:var(--green)}
 .logo span{color:white}
-button{cursor:pointer}
-.add-btn{background:var(--green);color:#06140d;border:0;padding:12px 18px;border-radius:9px;font-weight:bold}
-.hero{text-align:center;padding:75px 20px 45px}
-.hero h1{font-size:clamp(30px,5vw,48px);margin-bottom:15px}
-.hero h1 span{color:var(--green)}
-.hero p{color:var(--muted);font-size:16px;margin-bottom:30px}
-.search-box{max-width:650px;margin:auto;display:flex;background:white;padding:7px;border-radius:12px;gap:8px}
-.search-box input{flex:1;min-width:0;border:0;outline:0;padding:13px;font-size:15px;color:#111}
-.search-box button{background:var(--green);border:0;padding:0 22px;border-radius:8px;font-weight:bold}
-.container{padding:35px 7%}
-.section-title{font-size:23px;margin-bottom:22px}
-.categories{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:38px}
-.category{background:var(--card);border:1px solid #254535;padding:13px 20px;border-radius:10px;color:white}
-.category.active,.category:hover{background:var(--green);color:#06140d}
-.location-select{background:var(--card);border:1px solid #254535;color:white;padding:12px;border-radius:8px;margin-bottom:25px;width:100%;max-width:250px}
-.business-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
-.card{background:var(--card);border:1px solid #254535;border-radius:14px;overflow:hidden;transition:.25s}
-.card:hover{transform:translateY(-5px);border-color:var(--green)}
-.card-img{height:145px;display:flex;align-items:center;justify-content:center;font-size:55px;background:#193528}
-.card-content{padding:18px}
-.card h3{font-size:19px;margin-bottom:9px}
-.card p{color:var(--muted);font-size:14px;margin-bottom:8px;overflow-wrap:anywhere}
-.card .tag{display:inline-block;color:var(--green);font-size:12px;margin-bottom:12px}
-.contact-btn{display:block;text-align:center;background:#193b2a;color:var(--green);padding:11px;border-radius:8px;text-decoration:none;font-weight:bold;margin-top:12px}
-.empty{display:none;text-align:center;color:var(--muted);padding:40px}
-footer{margin-top:65px;padding:30px 7%;text-align:center;border-top:1px solid #20372b;color:var(--muted)}
-footer span{color:var(--green)}
-
-/* Registration modal */
-.modal{display:none;position:fixed;inset:0;background:#000b;z-index:10;overflow-y:auto;padding:25px 14px}
-.modal.show{display:flex;align-items:center;justify-content:center}
-.modal-box{background:#10251b;border:1px solid #315540;border-radius:16px;padding:25px;width:100%;max-width:520px;margin:auto}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.modal-head h2{font-size:23px}
-.close-btn{background:#203b2c;color:white;border:0;border-radius:8px;padding:9px 13px;font-size:18px}
-.modal-sub{color:var(--muted);font-size:14px;margin-bottom:22px;line-height:1.5}
-.form-group{margin-bottom:15px}
-.form-group label{display:block;font-size:14px;margin-bottom:7px;color:#dce9e0}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:13px;background:#081510;color:white;border:1px solid #315540;border-radius:8px;outline:none;font-size:15px}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green)}
-.form-group select option{background:#081510}
-.form-group textarea{min-height:90px;resize:vertical}
-.submit-btn{width:100%;padding:14px;background:var(--green);color:#06140d;border:0;border-radius:9px;font-weight:bold;font-size:16px}
-.submit-btn:disabled{opacity:.6;cursor:not-allowed}
-.form-message{margin-top:15px;font-size:14px;line-height:1.5;display:none}
-.form-message.success{display:block;color:#21c982}
-.form-message.error{display:block;color:#ff8585}
-@media(max-width:600px){
- header{padding:17px 5%;gap:10px}
- .logo{font-size:21px}
- .add-btn{padding:11px;font-size:12px}
- .hero{padding:55px 15px 35px}
- .container{padding:25px 5%}
- .search-box button{padding:0 14px}
- .modal-box{padding:20px}
+nav{display:flex;align-items:center;gap:24px}
+nav a{color:#d6e7dc;text-decoration:none;font-size:14px}
+.btn{
+background:var(--green);color:#062014;border:0;
+padding:13px 19px;border-radius:9px;font-weight:700;
+cursor:pointer
+}
+.hero{text-align:center;padding:85px 20px 55px}
+.tag{
+color:var(--green);font-size:13px;letter-spacing:2px;
+margin-bottom:18px;font-weight:bold
+}
+h1{font-size:clamp(32px,6vw,57px);line-height:1.15}
+h1 span{color:var(--green)}
+.hero p{color:var(--muted);margin:18px auto 30px;max-width:600px;line-height:1.7}
+.search{
+max-width:760px;margin:auto;display:flex;gap:10px;
+background:#12251b;padding:10px;border:1px solid #294334;
+border-radius:13px
+}
+.search input,.search select{
+background:transparent;color:white;border:0;outline:0;
+padding:12px;min-width:0;flex:1
+}
+.search select option{background:#10231a}
+.search button{padding:13px 22px}
+.section{padding:45px 7%}
+.section-head{
+display:flex;justify-content:space-between;
+align-items:center;margin-bottom:25px;gap:15px
+}
+.section-head h2{font-size:25px}
+.section-head p{color:var(--muted);font-size:13px;margin-top:7px}
+.categories{
+display:grid;grid-template-columns:repeat(6,1fr);gap:13px
+}
+.category{
+background:var(--card);border:1px solid #203b2b;
+border-radius:13px;padding:22px 10px;text-align:center;
+cursor:pointer;transition:.2s
+}
+.category:hover,.category.active{
+border-color:var(--green);background:#153526
+}
+.category .emoji{font-size:27px;margin-bottom:12px}
+.category h3{font-size:14px}
+.business-grid{
+display:grid;grid-template-columns:repeat(3,1fr);gap:18px
+}
+.business{
+background:var(--card);border:1px solid #203b2b;
+border-radius:15px;padding:22px
+}
+.business .business-icon{font-size:30px;margin-bottom:16px}
+.business h3{font-size:19px;margin-bottom:9px}
+.business p{font-size:13px;color:var(--muted);line-height:1.7}
+.business .category-label{
+display:inline-block;color:var(--green);font-size:11px;
+background:#173d2a;padding:6px 10px;border-radius:20px;
+margin-bottom:12px
+}
+.business a{
+display:inline-block;margin-top:17px;color:var(--green);
+text-decoration:none;font-weight:bold;font-size:13px
+}
+.empty{
+grid-column:1/-1;text-align:center;padding:45px;
+color:var(--muted)
+}
+.cta{
+margin:30px 7% 65px;padding:40px 25px;
+background:linear-gradient(120deg,#123b28,#10251a);
+border:1px solid #28543a;border-radius:18px;text-align:center
+}
+.cta h2{font-size:27px;margin-bottom:12px}
+.cta p{color:var(--muted);margin-bottom:22px;line-height:1.6}
+footer{
+padding:28px 7%;border-top:1px solid #20372a;
+color:var(--muted);font-size:13px;text-align:center
+}
+.modal{
+display:none;position:fixed;inset:0;background:#000b;
+z-index:10;align-items:center;justify-content:center;padding:15px
+}
+.modal.show{display:flex}
+.modal-box{
+background:#10231a;border:1px solid #31543d;
+border-radius:16px;padding:25px;width:100%;max-width:520px;
+max-height:90vh;overflow-y:auto
+}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-head h2{font-size:22px}
+.close{
+background:none;border:0;color:white;font-size:27px;cursor:pointer
+}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:13px;margin-bottom:7px;color:#d5e7dc}
+.form-group input,.form-group select,.form-group textarea{
+width:100%;padding:13px;border-radius:8px;
+border:1px solid #31503b;background:#091810;color:white;
+outline:none
+}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-group select option{background:#10231a}
+.submit{width:100%;margin-top:8px}
+.message{font-size:13px;margin-top:14px;line-height:1.5}
+@media(max-width:800px){
+.categories{grid-template-columns:repeat(3,1fr)}
+.business-grid{grid-template-columns:repeat(2,1fr)}
+header{padding:17px 5%}
+nav{gap:12px}
+}
+@media(max-width:550px){
+nav a{display:none}
+header{padding:16px 5%}
+.logo{font-size:22px}
+.hero{padding:65px 17px 40px}
+.search{flex-wrap:wrap}
+.search input{flex-basis:100%}
+.search select{flex-basis:40%}
+.search button{flex:1}
+.section{padding:35px 5%}
+.categories{grid-template-columns:repeat(2,1fr)}
+.business-grid{grid-template-columns:1fr}
+.section-head h2{font-size:21px}
+.cta{margin:25px 5% 45px}
 }
 </style>
 </head>
@@ -75,297 +155,282 @@ footer span{color:var(--green)}
 <body>
 
 <header>
- <div class="logo">LOCAL<span>MATE</span></div>
- <button class="add-btn" onclick="openForm()">+ Add Your Business</button>
+  <div class="logo">LOCAL<span>MATE.</span></div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#categories">Categories</a>
+    <a href="#businesses">Businesses</a>
+    <button class="btn" onclick="openModal()">+ Add Your Business</button>
+  </nav>
 </header>
 
-<section class="hero">
- <h1>Find the Best Local<br><span>Businesses Near You!</span></h1>
- <p>Discover • Connect • Support Local</p>
- <div class="search-box">
-  <input type="text" id="searchInput" placeholder="Search shops, services, businesses..." oninput="filterBusinesses()">
-  <button onclick="filterBusinesses()">Search</button>
- </div>
+<section class="hero" id="home">
+  <div class="tag">DISCOVER • CONNECT • SUPPORT LOCAL</div>
+  <h1>Find the Best Local<br><span>Businesses Near You!</span></h1>
+  <p>Discover trusted local shops, services and businesses. Connect with the people who make your community special.</p>
+
+  <div class="search">
+    <input id="searchInput" placeholder="Search businesses..." oninput="filterBusinesses()">
+    <select id="cityFilter" onchange="filterBusinesses()">
+      <option value="">All Locations</option>
+      <option value="Nellore">Nellore</option>
+      <option value="Tirupati">Tirupati</option>
+      <option value="Vijayawada">Vijayawada</option>
+      <option value="Guntur">Guntur</option>
+      <option value="Visakhapatnam">Visakhapatnam</option>
+      <option value="Other">Other</option>
+    </select>
+    <button class="btn" onclick="filterBusinesses()">Search</button>
+  </div>
 </section>
 
-<main class="container">
-
- <h2 class="section-title">Explore Categories</h2>
- <div class="categories">
-  <button class="category active" onclick="chooseCategory('All',this)">All</button>
-  <button class="category" onclick="chooseCategory('Food',this)">🍔 Food</button>
-  <button class="category" onclick="chooseCategory('Shopping',this)">🛍️ Shopping</button>
-  <button class="category" onclick="chooseCategory('Beauty',this)">💇 Beauty</button>
-  <button class="category" onclick="chooseCategory('Education',this)">📚 Education</button>
-  <button class="category" onclick="chooseCategory('Services',this)">🔧 Services</button>
- </div>
-
- <h2 class="section-title">Discover Local Businesses</h2>
-
- <select class="location-select" id="location" onchange="filterBusinesses()">
-  <option value="">All Locations</option>
-  <option value="Nellore">Nellore</option>
-  <option value="Vijayawada">Vijayawada</option>
-  <option value="Guntur">Guntur</option>
-  <option value="Tirupati">Tirupati</option>
-  <option value="Visakhapatnam">Visakhapatnam</option>
- </select>
-
- <div class="business-grid" id="businessGrid">
-
-  <div class="card" data-category="Food" data-location="Nellore" data-name="food cafe">
-   <div class="card-img">🍔</div><div class="card-content">
-   <span class="tag">FOOD & RESTAURANTS</span><h3>Local Food Cafe</h3>
-   <p>📍 Nellore</p><p>Fresh and delicious food.</p>
-   <a class="contact-btn" href="#">View Details</a></div>
+<section class="section" id="categories">
+  <div class="section-head">
+    <div>
+      <h2>Explore Categories</h2>
+      <p>Find exactly what you are looking for.</p>
+    </div>
   </div>
 
-  <div class="card" data-category="Shopping" data-location="Vijayawada" data-name="fashion store">
-   <div class="card-img">🛍️</div><div class="card-content">
-   <span class="tag">SHOPPING</span><h3>Fashion Store</h3>
-   <p>📍 Vijayawada</p><p>Explore fashion and clothing.</p>
-   <a class="contact-btn" href="#">View Details</a></div>
+  <div class="categories">
+    <div class="category active" onclick="selectCategory('All',this)">
+      <div class="emoji">🌐</div><h3>All</h3>
+    </div>
+    <div class="category" onclick="selectCategory('Food',this)">
+      <div class="emoji">🍔</div><h3>Food</h3>
+    </div>
+    <div class="category" onclick="selectCategory('Shopping',this)">
+      <div class="emoji">🛍️</div><h3>Shopping</h3>
+    </div>
+    <div class="category" onclick="selectCategory('Beauty',this)">
+      <div class="emoji">💇</div><h3>Beauty</h3>
+    </div>
+    <div class="category" onclick="selectCategory('Education',this)">
+      <div class="emoji">📚</div><h3>Education</h3>
+    </div>
+    <div class="category" onclick="selectCategory('Services',this)">
+      <div class="emoji">🛠️</div><h3>Services</h3>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="businesses">
+  <div class="section-head">
+    <div>
+      <h2>Discover Local Businesses</h2>
+      <p>Explore businesses in your community.</p>
+    </div>
   </div>
 
-  <div class="card" data-category="Beauty" data-location="Guntur" data-name="beauty salon">
-   <div class="card-img">💇</div><div class="card-content">
-   <span class="tag">BEAUTY</span><h3>Beauty Salon</h3>
-   <p>📍 Guntur</p><p>Beauty and grooming services.</p>
-   <a class="contact-btn" href="#">View Details</a></div>
+  <div class="business-grid" id="businessGrid">
+    <div class="empty">Loading businesses...</div>
   </div>
+</section>
 
-  <div class="card" data-category="Education" data-location="Tirupati" data-name="learning academy">
-   <div class="card-img">📚</div><div class="card-content">
-   <span class="tag">EDUCATION</span><h3>Learning Academy</h3>
-   <p>📍 Tirupati</p><p>Learn and improve your skills.</p>
-   <a class="contact-btn" href="#">View Details</a></div>
-  </div>
-
-  <div class="card" data-category="Services" data-location="Visakhapatnam" data-name="home services">
-   <div class="card-img">🔧</div><div class="card-content">
-   <span class="tag">SERVICES</span><h3>Home Services</h3>
-   <p>📍 Visakhapatnam</p><p>Local home service providers.</p>
-   <a class="contact-btn" href="#">View Details</a></div>
-  </div>
-
-  <div class="card" data-category="Food" data-location="Nellore" data-name="sweet house">
-   <div class="card-img">🍰</div><div class="card-content">
-   <span class="tag">FOOD</span><h3>Sweet House</h3>
-   <p>📍 Nellore</p><p>Fresh sweets and bakery items.</p>
-   <a class="contact-btn" href="#">View Details</a></div>
-  </div>
-
- </div>
-
- <div class="empty" id="empty">
-  <h3>No businesses found!</h3>
-  <p>Try another search or location.</p>
- </div>
-</main>
-
-<!-- BUSINESS REGISTRATION FORM -->
-<div class="modal" id="businessModal">
- <div class="modal-box">
-  <div class="modal-head">
-   <h2>Add Your Business</h2>
-   <button class="close-btn" onclick="closeForm()">✕</button>
-  </div>
-
-  <p class="modal-sub">Register your local business on LOCALMATE. Your listing will be reviewed before it becomes public.</p>
-
-  <form id="businessForm">
-   <div class="form-group">
-    <label>Business Name *</label>
-    <input name="business_name" required maxlength="100" placeholder="Enter business name">
-   </div>
-
-   <div class="form-group">
-    <label>Owner Name *</label>
-    <input name="owner_name" required maxlength="100" placeholder="Enter owner name">
-   </div>
-
-   <div class="form-group">
-    <label>Business Category *</label>
-    <select name="category" required>
-     <option value="">Select category</option>
-     <option value="Food">Food</option>
-     <option value="Shopping">Shopping</option>
-     <option value="Beauty">Beauty</option>
-     <option value="Education">Education</option>
-     <option value="Services">Services</option>
-    </select>
-   </div>
-
-   <div class="form-group">
-    <label>City *</label>
-    <select name="city" required>
-     <option value="">Select city</option>
-     <option value="Nellore">Nellore</option>
-     <option value="Vijayawada">Vijayawada</option>
-     <option value="Guntur">Guntur</option>
-     <option value="Tirupati">Tirupati</option>
-     <option value="Visakhapatnam">Visakhapatnam</option>
-     <option value="Other">Other</option>
-    </select>
-   </div>
-
-   <div class="form-group">
-    <label>Full Business Address *</label>
-    <textarea name="address" required maxlength="500" placeholder="Enter complete address"></textarea>
-   </div>
-
-   <div class="form-group">
-    <label>Phone Number *</label>
-    <input name="phone" type="tel" required maxlength="20" placeholder="Enter phone number">
-   </div>
-
-   <div class="form-group">
-    <label>WhatsApp Number (Optional)</label>
-    <input name="whatsapp" type="tel" maxlength="20" placeholder="Enter WhatsApp number">
-   </div>
-
-   <div class="form-group">
-    <label>Business Description (Optional)</label>
-    <textarea name="description" maxlength="1000" placeholder="Describe your business and services"></textarea>
-   </div>
-
-   <button class="submit-btn" id="submitBtn" type="submit">Submit Registration</button>
-   <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
-  </form>
- </div>
-</div>
+<section class="cta">
+  <h2>Are You a Business Owner?</h2>
+  <p>Bring your business online and help more local customers discover you.</p>
+  <button class="btn" onclick="openModal()">Register Your Business →</button>
+</section>
 
 <footer>
- <p>© 2026 <span>LOCALMATE</span>. Discover • Connect • Support Local.</p>
+  <div class="logo">LOCAL<span>MATE.</span></div>
+  <p style="margin-top:12px">Discover • Connect • Support Local</p>
+  <p style="margin-top:12px">© 2026 LOCALMATE. All rights reserved.</p>
 </footer>
 
-<script>
-let selectedCategory="All";
+<div class="modal" id="registerModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Register Your Business</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
 
-function chooseCategory(category,element){
- selectedCategory=category;
- document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
- element.classList.add("active");
- filterBusinesses();
+    <form id="businessForm">
+      <div class="form-group">
+        <label>Business Name *</label>
+        <input name="business_name" required placeholder="Enter business name">
+      </div>
+
+      <div class="form-group">
+        <label>Owner Name *</label>
+        <input name="owner_name" required placeholder="Enter owner name">
+      </div>
+
+      <div class="form-group">
+        <label>Category *</label>
+        <select name="category" required>
+          <option value="">Select category</option>
+          <option>Food</option>
+          <option>Shopping</option>
+          <option>Beauty</option>
+          <option>Education</option>
+          <option>Services</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>City *</label>
+        <input name="city" required placeholder="Enter city">
+      </div>
+
+      <div class="form-group">
+        <label>Business Address *</label>
+        <input name="address" required placeholder="Enter business address">
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input name="phone" type="tel" required placeholder="Business phone number">
+      </div>
+
+      <div class="form-group">
+        <label>WhatsApp Number</label>
+        <input name="whatsapp" type="tel" placeholder="Optional">
+      </div>
+
+      <div class="form-group">
+        <label>Business Description</label>
+        <textarea name="description" placeholder="Tell customers about your business"></textarea>
+      </div>
+
+      <button class="btn submit" id="submitButton" type="submit">Submit Registration</button>
+      <div class="message" id="formMessage"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+let allBusinesses = [];
+let activeCategory = "All";
+
+function openModal(){
+  document.getElementById("registerModal").classList.add("show");
+}
+
+function closeModal(){
+  document.getElementById("registerModal").classList.remove("show");
+}
+
+document.getElementById("registerModal").addEventListener("click",function(e){
+  if(e.target===this) closeModal();
+});
+
+function selectCategory(category,element){
+  activeCategory=category;
+  document.querySelectorAll(".category").forEach(c=>c.classList.remove("active"));
+  element.classList.add("active");
+  filterBusinesses();
 }
 
 function filterBusinesses(){
- const search=document.getElementById("searchInput").value.toLowerCase();
- const location=document.getElementById("location").value;
- let visible=0;
+  const search=document.getElementById("searchInput").value.toLowerCase();
+  const city=document.getElementById("cityFilter").value.toLowerCase();
 
- document.querySelectorAll(".card").forEach(card=>{
-  const matchesCategory=selectedCategory==="All"||card.dataset.category===selectedCategory;
-  const matchesLocation=!location||card.dataset.location===location;
-  const matchesSearch=card.dataset.name.toLowerCase().includes(search)||card.innerText.toLowerCase().includes(search);
-  const show=matchesCategory&&matchesLocation&&matchesSearch;
-  card.style.display=show?"block":"none";
-  if(show)visible++;
- });
+  const filtered=allBusinesses.filter(b=>{
+    const matchesSearch=
+      (b.business_name||"").toLowerCase().includes(search) ||
+      (b.category||"").toLowerCase().includes(search) ||
+      (b.city||"").toLowerCase().includes(search);
 
- document.getElementById("empty").style.display=visible?"none":"block";
+    const matchesCity=!city || (b.city||"").toLowerCase()===city;
+    const matchesCategory=activeCategory==="All" ||
+      (b.category||"").toLowerCase()===activeCategory.toLowerCase();
+
+    return matchesSearch && matchesCity && matchesCategory;
+  });
+
+  renderBusinesses(filtered);
 }
 
-function openForm(){
- document.getElementById("businessModal").classList.add("show");
- document.body.style.overflow="hidden";
-}
+function renderBusinesses(list){
+  const grid=document.getElementById("businessGrid");
+  grid.innerHTML="";
 
-function closeForm(){
- document.getElementById("businessModal").classList.remove("show");
- document.body.style.overflow="";
-}
+  if(!list.length){
+    grid.innerHTML='<div class="empty">No approved businesses found yet. Check back soon!</div>';
+    return;
+  }
 
-document.getElementById("businessModal").addEventListener("click",function(e){
- if(e.target===this)closeForm();
-});
+  list.forEach(b=>{
+    const card=document.createElement("div");
+    card.className="business";
 
-function addApprovedBusiness(b){
- const grid=document.getElementById("businessGrid");
- const card=document.createElement("div");
- card.className="card";
- card.dataset.category=b.category||"";
- card.dataset.location=b.city||"";
- card.dataset.name=(b.business_name||"").toLowerCase();
+    const icon=document.createElement("div");
+    icon.className="business-icon";
+    icon.textContent="🏪";
 
- const image=document.createElement("div");
- image.className="card-img";
- image.textContent=({Food:"🍔",Shopping:"🛍️",Beauty:"💇",Education:"📚",Services:"🔧"})[b.category]||"🏪";
+    const label=document.createElement("div");
+    label.className="category-label";
+    label.textContent=b.category||"Business";
 
- const content=document.createElement("div");
- content.className="card-content";
+    const name=document.createElement("h3");
+    name.textContent=b.business_name;
 
- const tag=document.createElement("span");
- tag.className="tag";
- tag.textContent=(b.category||"BUSINESS").toUpperCase();
+    const city=document.createElement("p");
+    city.textContent="📍 "+(b.city||"");
 
- const name=document.createElement("h3");
- name.textContent=b.business_name||"Local Business";
+    const address=document.createElement("p");
+    address.textContent=b.address||"";
 
- const city=document.createElement("p");
- city.textContent="📍 "+(b.city||"");
+    const description=document.createElement("p");
+    description.textContent=b.description||"Local business";
 
- const description=document.createElement("p");
- description.textContent=b.description||"Local business on LOCALMATE.";
+    const link=document.createElement("a");
+    link.textContent="Contact Business →";
+    link.href="https://wa.me/"+String(b.whatsapp||b.phone||"").replace(/\D/g,"");
+    link.target="_blank";
+    link.rel="noopener noreferrer";
 
- const contact=document.createElement("a");
- contact.className="contact-btn";
- contact.textContent="Call Business";
- contact.href="tel:"+String(b.phone||"").replace(/[^0-9+]/g,"");
-
- content.append(tag,name,city,description,contact);
- card.append(image,content);
- grid.prepend(card);
+    card.append(icon,label,name,city,address,description,link);
+    grid.appendChild(card);
+  });
 }
 
 async function loadBusinesses(){
- try{
-  const response=await fetch("/api/businesses");
-  if(!response.ok)throw new Error("Could not load businesses");
-  const businesses=await response.json();
-  if(Array.isArray(businesses)){
-   businesses.forEach(addApprovedBusiness);
-   filterBusinesses();
+  try{
+    const response=await fetch("/api/businesses");
+    if(!response.ok) throw new Error("Could not load businesses");
+    allBusinesses=await response.json();
+    filterBusinesses();
+  }catch(error){
+    document.getElementById("businessGrid").innerHTML=
+      '<div class="empty">Unable to load businesses right now. Please try again later.</div>';
   }
- }catch(error){
-  console.log("Business listings could not be loaded:",error);
- }
 }
 
 document.getElementById("businessForm").addEventListener("submit",async function(e){
- e.preventDefault();
+  e.preventDefault();
 
- const form=this;
- const button=document.getElementById("submitBtn");
- const message=document.getElementById("formMessage");
- const data=Object.fromEntries(new FormData(form).entries());
+  const button=document.getElementById("submitButton");
+  const message=document.getElementById("formMessage");
+  const data=Object.fromEntries(new FormData(this).entries());
 
- button.disabled=true;
- button.textContent="Submitting...";
- message.className="form-message";
- message.style.display="none";
+  button.disabled=true;
+  button.textContent="Submitting...";
+  message.textContent="";
 
- try{
-  const response=await fetch("/api/register",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify(data)
-  });
+  try{
+    const response=await fetch("/api/register",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(data)
+    });
 
-  const result=await response.json();
+    const result=await response.json();
 
-  if(!response.ok)throw new Error(result.error||"Registration failed.");
+    if(!response.ok) throw new Error(result.error||"Registration failed");
 
-  message.textContent="Registration submitted successfully! Your business is now pending admin approval.";
-  message.className="form-message success";
-  form.reset();
- }catch(error){
-  message.textContent=error.message||"Something went wrong. Please try again.";
-  message.className="form-message error";
- }finally{
-  button.disabled=false;
-  button.textContent="Submit Registration";
- }
+    message.style.color="#21c982";
+    message.textContent="Registration submitted successfully! Your business is pending admin approval.";
+    this.reset();
+  }catch(error){
+    message.style.color="#ff8b8b";
+    message.textContent=error.message||"Something went wrong. Please try again.";
+  }finally{
+    button.disabled=false;
+    button.textContent="Submit Registration";
+  }
 });
 
 loadBusinesses();
