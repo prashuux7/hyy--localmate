@@ -1,3 +1,4 @@
+
 async function createTables(db) {
   await db.prepare(`
     CREATE TABLE IF NOT EXISTS businesses (
@@ -11,9 +12,21 @@ async function createTables(db) {
       whatsapp TEXT,
       description TEXT,
       status TEXT NOT NULL DEFAULT 'pending',
+      previous_status TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     )
   `).run();
+
+  // Add column to an existing database if it is missing.
+  const columns = await db.prepare(
+    "PRAGMA table_info(businesses)"
+  ).all();
+
+  if (!columns.results.some(column => column.name === "previous_status")) {
+    await db.prepare(
+      "ALTER TABLE businesses ADD COLUMN previous_status TEXT"
+    ).run();
+  }
 }
 
 function json(data, status = 200) {
@@ -37,9 +50,7 @@ function base64url(bytes) {
 }
 
 function fromBase64url(value) {
-  const base64 = value
-    .replace(/-/g, "+")
-    .replace(/_/g, "/");
+  const base64 = value.replace(/-/g, "+").replace(/_/g, "/");
 
   return Uint8Array.from(
     atob(base64),
@@ -81,14 +92,10 @@ async function verifySession(request, password) {
     if (parts.length !== 2) return false;
 
     const issuedAt = Number(parts[0]);
-
     if (!Number.isFinite(issuedAt)) return false;
 
     const age = Date.now() - issuedAt;
-
-    if (age < 0 || age > 8 * 60 * 60 * 1000) {
-      return false;
-    }
+    if (age < 0 || age > 8 * 60 * 60 * 1000) return false;
 
     const key = await getSigningKey(password);
 
@@ -127,7 +134,6 @@ async function passwordMatches(input, expected) {
   );
 
   let difference = 0;
-
   for (let i = 0; i < a.length; i++) {
     difference |= a[i] ^ b[i];
   }
@@ -150,7 +156,7 @@ export default {
     try {
       await createTables(env.DB);
 
-      // PUBLIC: Approved businesses
+      // PUBLIC: Approved businesses only
       if (
         url.pathname === "/api/businesses" &&
         request.method === "GET"
@@ -255,7 +261,7 @@ export default {
         });
       }
 
-      // ADMIN: Protect all remaining admin routes
+      // ADMIN: Protect remaining admin routes
       if (url.pathname.startsWith("/api/admin/")) {
         if (!env.ADMIN_PASSWORD) {
           return json({ error: "Admin password not configured" }, 500);
@@ -265,7 +271,7 @@ export default {
           return json({ error: "Unauthorized" }, 401);
         }
 
-        // ADMIN: View registrations
+        // ADMIN: View all businesses, including hidden ones
         if (
           url.pathname === "/api/admin/businesses" &&
           request.method === "GET"
@@ -277,7 +283,7 @@ export default {
           return json(result.results);
         }
 
-        // ADMIN: Approve or reject
+        // ADMIN: Approve, reject or hide a business
         if (
           url.pathname === "/api/admin/decision" &&
           request.method === "POST"
@@ -292,22 +298,67 @@ export default {
           if (
             !Number.isInteger(id) ||
             id < 1 ||
-            !["approved", "rejected"].includes(data.status)
+            !["approved", "rejected", "hidden"].includes(data.status)
           ) {
             return json({ error: "Invalid decision" }, 400);
           }
 
-          const result = await env.DB.prepare(
-            "UPDATE businesses SET status = ? WHERE id = ?"
-          ).bind(data.status, id).run();
+          let result;
+
+          if (data.status === "hidden") {
+            result = await env.DB.prepare(`
+              UPDATE businesses
+              SET previous_status = status, status = 'hidden'
+              WHERE id = ? AND status != 'hidden'
+            `).bind(id).run();
+          } else {
+            result = await env.DB.prepare(`
+              UPDATE businesses
+              SET status = ?, previous_status = NULL
+              WHERE id = ?
+            `).bind(data.status, id).run();
+          }
 
           if (!result.meta || result.meta.changes === 0) {
-            return json({ error: "Business not found" }, 404);
+            return json({ error: "Business not found or already hidden" }, 404);
           }
 
           return json({
             success: true,
             message: `Business ${data.status}.`
+          });
+        }
+
+        // ADMIN: Restore a hidden business
+        if (
+          url.pathname === "/api/admin/restore" &&
+          request.method === "POST"
+        ) {
+          if (!sameOrigin(request, url)) {
+            return json({ error: "Invalid request origin" }, 403);
+          }
+
+          const data = await request.json();
+          const id = Number(data.id);
+
+          if (!Number.isInteger(id) || id < 1) {
+            return json({ error: "Invalid business ID" }, 400);
+          }
+
+          const result = await env.DB.prepare(`
+            UPDATE businesses
+            SET status = COALESCE(previous_status, 'approved'),
+                previous_status = NULL
+            WHERE id = ? AND status = 'hidden'
+          `).bind(id).run();
+
+          if (!result.meta || result.meta.changes === 0) {
+            return json({ error: "Hidden business not found" }, 404);
+          }
+
+          return json({
+            success: true,
+            message: "Business restored successfully."
           });
         }
       }
