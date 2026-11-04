@@ -18,12 +18,12 @@ h1{font-size:27px;margin-bottom:8px}
 input{width:100%;padding:14px;border-radius:9px;border:1px solid #355343;background:#081510;color:white;margin:14px 0}
 button{border:0;border-radius:9px;padding:12px 17px;font-weight:bold;cursor:pointer}
 button:disabled{opacity:.5;cursor:not-allowed}
-.primary,.approve{background:#21c982;color:#06150d}
+.primary,.approve,.restore{background:#21c982;color:#06150d}
 .secondary{background:#254334;color:white}
 .reject{background:#a83d48;color:white}
 .unpublish{background:#d18b35;color:#171006}
 .hidden{display:none!important}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:22px 0}
 .stat{background:#10231a;padding:17px;border-radius:12px;border:1px solid #254334}
 .stat strong{display:block;font-size:25px;color:#21c982;margin-bottom:5px}
 .business{background:#10231a;border:1px solid #254334;border-radius:14px;padding:18px;margin:14px 0}
@@ -32,11 +32,8 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .status{display:inline-block;padding:6px 10px;border-radius:20px;background:#254334;color:#b8f5d5;font-size:12px;margin:10px 0}
 .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 .message{margin-top:12px;color:#ffb6b6;font-size:14px}
-@media(max-width:550px){
-.stats{grid-template-columns:repeat(2,1fr)}
-header{align-items:flex-start}
-h1{font-size:23px}
-}
+@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:550px){header{align-items:flex-start}h1{font-size:23px}}
 </style>
 </head>
 <body>
@@ -66,6 +63,7 @@ h1{font-size:23px}
 <div class="stat"><strong id="pending">0</strong><span>Pending</span></div>
 <div class="stat"><strong id="approved">0</strong><span>Approved</span></div>
 <div class="stat"><strong id="rejected">0</strong><span>Rejected</span></div>
+<div class="stat"><strong id="hiddenCount">0</strong><span>Hidden</span></div>
 </div>
 
 <div style="display:flex;justify-content:space-between;align-items:center;margin:25px 0 15px;gap:10px">
@@ -137,6 +135,7 @@ async function loadBusinesses(){
   document.getElementById("pending").textContent=businesses.filter(x=>x.status==="pending").length;
   document.getElementById("approved").textContent=businesses.filter(x=>x.status==="approved").length;
   document.getElementById("rejected").textContent=businesses.filter(x=>x.status==="rejected").length;
+  document.getElementById("hiddenCount").textContent=businesses.filter(x=>x.status==="hidden").length;
 
   listMessage.textContent=businesses.length
    ?"All submitted registrations"
@@ -178,13 +177,14 @@ async function loadBusinesses(){
     addButton(actions,"Approve","approve",()=>decide(b.id,"approved"));
     addButton(actions,"Reject","reject",()=>decide(b.id,"rejected"));
    }
-
    else if(b.status==="approved"){
-    addButton(actions,"Unpublish","unpublish",()=>decide(b.id,"rejected"));
+    addButton(actions,"Unpublish","unpublish",()=>decide(b.id,"hidden"));
    }
-
    else if(b.status==="rejected"){
     addButton(actions,"Re-approve","approve",()=>decide(b.id,"approved"));
+   }
+   else if(b.status==="hidden"){
+    addButton(actions,"Restore","restore",()=>restoreBusiness(b.id));
    }
 
    if(actions.children.length)card.append(actions);
@@ -205,7 +205,7 @@ function addButton(parent,label,className,callback){
 }
 
 async function decide(id,status){
- const action=status==="approved"?"approve":"reject/unpublish";
+ const action=status==="approved"?"approve":status==="hidden"?"hide":"reject";
 
  if(!confirm("Are you sure you want to "+action+" this business?"))return;
 
@@ -214,14 +214,32 @@ async function decide(id,status){
    method:"POST",
    credentials:"same-origin",
    headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({
-    id:Number(id),
-    status:status
-   })
+   body:JSON.stringify({id:Number(id),status:status})
   });
 
   const data=await response.json();
   if(!response.ok)throw new Error(data.error||"Action failed");
+
+  await loadBusinesses();
+
+ }catch(error){
+  alert(error.message);
+ }
+}
+
+async function restoreBusiness(id){
+ if(!confirm("Restore this business to its previous status?"))return;
+
+ try{
+  const response=await fetch("/api/admin/restore",{
+   method:"POST",
+   credentials:"same-origin",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({id:Number(id)})
+  });
+
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error||"Restore failed");
 
   await loadBusinesses();
 
